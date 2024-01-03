@@ -14,7 +14,7 @@ import { EditorBubbleMenu } from "./bubble-menu";
 import { getPrevText } from "@/lib/editor";
 import { ImageResizer } from "./extensions/image-resizer";
 import { EditorProps } from "@tiptap/pm/view";
-import { Editor as EditorClass, Extensions } from "@tiptap/core";
+import { Editor as EditorClass, Extensions, FocusPosition } from "@tiptap/core";
 import { NovelContext } from "./provider";
 
 export default function Editor({
@@ -86,7 +86,7 @@ export default function Editor({
    * Whether or not to focus the editor on mount.
    * Defaults to end.
    */
-  autofocus?: boolean | "start" | "end" | "all" | Number | null;
+  autofocus?: FocusPosition;
 }) {
   const [content, setContent] = useLocalStorage(storageKey, defaultValue);
 
