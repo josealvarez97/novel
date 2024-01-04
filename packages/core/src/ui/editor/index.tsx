@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useEditor, EditorContent, JSONContent } from "@tiptap/react";
 import { defaultEditorProps } from "./props";
 import { defaultExtensions } from "./extensions";
@@ -29,6 +29,7 @@ export default function Editor({
   storageKey = "novel__content",
   disableLocalStorage = false,
   autofocus = "end",
+  customBubbleMenu = null,
 }: {
   /**
    * The API route to use for the OpenAI completion API.
@@ -87,6 +88,11 @@ export default function Editor({
    * Defaults to end.
    */
   autofocus?: FocusPosition;
+  /**
+   * A custom bubble menu to use for the editor.
+   * Defaults to null.
+   */
+  customBubbleMenu?: React.ComponentType<{ editor: EditorClass }> | null;
 }) {
   const [content, setContent] = useLocalStorage(storageKey, defaultValue);
 
@@ -219,7 +225,12 @@ export default function Editor({
         }}
         className={className}
       >
-        {editor && <EditorBubbleMenu editor={editor} />}
+        {editor &&
+          (customBubbleMenu ? (
+            React.createElement(customBubbleMenu, { editor })
+          ) : (
+            <EditorBubbleMenu editor={editor} />
+          ))}
         {editor?.isActive("image") && <ImageResizer editor={editor} />}
         <EditorContent editor={editor} />
       </div>
